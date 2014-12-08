@@ -38,31 +38,27 @@ Ext.define('ChatApp.controller.Main', {
 	launch:function(){
 	},
 
-	loginBtnTapped: function(){
-		var me = this,
-		    API = ChatApp.app.getController('API'),
-		    loginView = Ext.Viewport.getActiveItem().down('signin');
-		var email = loginView.down('#emailIdLogin').getValue();
-		var password = loginView.down('#passwordIdLogin').getValue();
-		var params = {
-			email     : email,
-			password  : password
-		};
 
-	 	Ext.Viewport.setMasked({xtype:'loadmask'});
+	refreshFriendList:function(){
+		var me = this,
+		    API = ChatApp.app.getController('API');
+		var params = {
+			email     : localStorage.getItem('email'),
+			password  : localStorage.getItem('password')
+		};
+		
 	 	API.doLogin(params,             // params
 			function(res){      // Success Function
-			    Ext.Viewport.setMasked(false);
 			    data = Ext.decode(res.responseText);
 
 			    if(data.error){
-			        Ext.Msg.alert("Error",data.error);
+			        //Ext.Msg.alert("Error",data.error);
 			        return;
 			    }
 			    if(data.result){
 			    	if(data.result.errorcode)
 			    	{
-			        	Ext.Msg.alert("Error",data.result.messages);
+			        	//Ext.Msg.alert("Error",data.result.messages);
 			        	return;
 			        }
 			    }
@@ -71,8 +67,11 @@ Ext.define('ChatApp.controller.Main', {
 			    store.add(data);
 
 			    var friendStore = Ext.getStore('FriendsList');
-			    friendStore.removeAll(true);
-			    friendStore.add(data.friends);
+			    if(friendStore.getCount() < data.friends.length){
+				    friendStore.removeAll(true);
+				    friendStore.add(data.friends);
+    			    Ext.Viewport.getActiveItem().getActiveItem().getActiveItem().down('friendsList').refresh();
+				}
 
 
 				var chatStore = Ext.getStore('ChatList');
@@ -102,7 +101,161 @@ Ext.define('ChatApp.controller.Main', {
 			    }
 
 			    for(var i=0; i<data.new_request.length; i++){
-			    	friendStore.insert(0,data.new_request[i]);
+			    	me.acceptFriendToList(data.auth_token,data.new_request[i].user_id);
+			    }
+
+			},
+			function(res){      // Failure Function
+				Ext.Viewport.setMasked(false);
+				console.log(res);
+		});
+
+	},
+
+	acceptFriendToList: function(auth_token, fid){
+		var me = this,
+		    API = ChatApp.app.getController('API');
+		    
+		var params = {
+			authentication_token : auth_token,
+			friend_id  : fid
+		};
+
+	 	Ext.Viewport.setMasked({xtype:'loadmask'});
+	 	API.confirmFriendRequest(params,             // params
+			function(res){      // Success Function
+			    Ext.Viewport.setMasked(false);
+			    data = Ext.decode(res.responseText);
+
+			    if(data.error){
+			        //Ext.Msg.alert("Error",data.error);
+			        return;
+			    }
+			    if(data.result){
+			    	if(data.result.errorcode)
+			    	{
+			        	//Ext.Msg.alert("Error",data.result.messages);
+			        	return;
+			        }
+			    }
+
+
+/*
+				d = data;
+				console.log(data);
+			    
+			    var friendStore = Ext.getStore('FriendsList');
+			    friendStore.add(data);
+
+				var chatStore = Ext.getStore('ChatList');
+
+				PUBNUB_demo.subscribe({
+			            channel: data.channel_id,
+			            message: function(msgObj){
+			            	console.log(msgObj);
+			            	if(msgObj.mid != null)
+			            	{
+			            		//for(var i=0; i<msgObj.length; i++){
+			            			if(((msgObj.isTranslated == true) && (msgObj.sid == store.getAt(0).data.user_id)))
+			            			{
+
+		                        	}
+		                        	else{
+		                        		chatStore.add(msgObj);
+		                        		setTimeout(function(){
+		                        			var chatView = Ext.Viewport.getActiveItem().getActiveItem().getActiveItem().down('chatView');
+				                            chatView.getScrollable().getScroller().scrollToEnd();
+				                        },200);
+		                        	}
+		                    	//}
+		                    }
+			            }
+			       });
+
+			    Ext.Viewport.getActiveItem().getActiveItem().getActiveItem().down('friendsList').refresh();
+
+			    */
+			},
+			function(res){      // Failure Function
+				Ext.Viewport.setMasked(false);
+				console.log(res);
+		});
+	},
+
+	loginBtnTapped: function(){
+		var me = this,
+		    API = ChatApp.app.getController('API'),
+		    loginView = Ext.Viewport.getActiveItem().down('signin');
+		var email = loginView.down('#emailIdLogin').getValue();
+		var password = loginView.down('#passwordIdLogin').getValue();
+		var params = {
+			email     : email,
+			password  : password
+		};
+
+		localStorage.setItem('email',email);
+		localStorage.setItem('password',password);
+
+	 	Ext.Viewport.setMasked({xtype:'loadmask'});
+	 	API.doLogin(params,             // params
+			function(res){      // Success Function
+			    Ext.Viewport.setMasked(false);
+			    data = Ext.decode(res.responseText);
+
+			    if(data.error){
+			        Ext.Msg.alert("Error",data.error);
+			        return;
+			    }
+			    if(data.result){
+			    	if(data.result.errorcode)
+			    	{
+			        	Ext.Msg.alert("Error",data.result.messages);
+			        	return;
+			        }
+			    }
+			    var store = Ext.getStore('User');
+			    store.removeAll(true);
+			    store.add(data);
+
+			    var friendStore = Ext.getStore('FriendsList');
+			    friendStore.removeAll(true);
+			    friendStore.add(data.friends);
+
+				refreshVar = setInterval(function(){
+					me.refreshFriendList();
+				},30000);
+			    
+
+
+				var chatStore = Ext.getStore('ChatList');
+
+			    for(var i=0; i<friendStore.getCount(); i++){
+			    	PUBNUB_demo.subscribe({
+			            channel: friendStore.getAt(i).data.channel_id, //'demo_deep',
+			            message: function(msgObj){
+			            	console.log(msgObj);
+			            	if(msgObj.mid != null)
+			            	{
+			            		//for(var i=0; i<msgObj.length; i++){
+			            			if(((msgObj.isTranslated == true) && (msgObj.sid == store.getAt(0).data.user_id)))
+			            			{
+		                        	}
+		                        	else{
+		                        		chatStore.add(msgObj);
+		                        		setTimeout(function(){
+		                        			var chatView = Ext.Viewport.getActiveItem().getActiveItem().getActiveItem().down('chatView');
+				                            chatView.getScrollable().getScroller().scrollToEnd();
+				                        },200);
+		                        	}
+		                    	//}
+		                    }
+			            }
+			        });
+			    }
+
+			    for(var i=0; i<data.new_request.length; i++){
+			    	me.acceptFriendToList(data.auth_token,data.new_request[i].user_id);
+			    	//friendStore.insert(0,data.new_request[i]);
 			    }
 
 			    Ext.Viewport.getActiveItem().animateActiveItem('mainContainer',{type:'flip'});
@@ -142,6 +295,9 @@ Ext.define('ChatApp.controller.Main', {
 			language  : language
 		};
 
+		localStorage.setItem('email',email);
+		localStorage.setItem('password',password);
+
 	 	Ext.Viewport.setMasked({xtype:'loadmask'});
 	 	API.doSignup({user: params},             // params
 			function(res){      // Success Function
@@ -167,6 +323,15 @@ Ext.define('ChatApp.controller.Main', {
 
 				var leftMenuNav = Ext.Viewport.getActiveItem().down('mainContainer').down('leftMenu');
 			    leftMenuNav.down('#namePanLeftMenuId').setHtml(data.first_name + " " + data.last_name);
+
+			    if(data.friends.length <= 0 && data.new_request.length <= 0){
+			    	Ext.Viewport.getActiveItem().getActiveItem().getActiveItem().setActiveItem('invite');
+			    	Ext.Msg.alert(null,"Please invite new friends for communication.");
+			    }
+
+			    refreshVar = setInterval(function(){
+					me.refreshFriendList();
+				},30000);
 			},
 			function(res){      // Failure Function
 				Ext.Viewport.setMasked(false);
@@ -216,7 +381,8 @@ Ext.define('ChatApp.controller.Main', {
 			    }
 			    Ext.Msg.alert(null,data.data.message);
 			    inviteView.down('#emailIdInvite').setValue("");
-
+			    var friendStore = Ext.getStore('FriendsList');
+			    //friendStore.add(data.friends);
 			},
 			function(res){      // Failure Function
 				Ext.Viewport.setMasked(false);

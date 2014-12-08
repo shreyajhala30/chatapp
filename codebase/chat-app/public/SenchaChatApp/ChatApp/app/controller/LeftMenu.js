@@ -76,6 +76,7 @@ Ext.define('ChatApp.controller.LeftMenu', {
 			mainCard.setActiveItem('settings');
 		}
 		else if(menuName == "Logout"){
+			clearInterval(refreshVar);
 			me.logoutApiCall();
 		}
 	},

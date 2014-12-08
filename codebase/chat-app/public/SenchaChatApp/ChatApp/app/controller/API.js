@@ -2,7 +2,7 @@ Ext.define('ChatApp.controller.API',{
     extend: 'Ext.app.Controller',
     
     config: {
-         DOMAIN: "https://chat--app.herokuapp.com", 
+         DOMAIN: "http://chat--app.herokuapp.com", 
            
          LOGIN_URI: "/api/authentication/login",
          SIGNUP_URI: "/api/authentication/sign_up",
@@ -10,21 +10,22 @@ Ext.define('ChatApp.controller.API',{
          InviteFriend: "/api/authentication/send_friend_request",
          CHANGE_PASSWORD_URI: "/api/authentication/change_password",
          LOGOUT_URI: "/api/authentication/logout?",
-         TRANSLATION_URI: "/api/authentication/set_translation"
+         TRANSLATION_URI: "/api/authentication/set_translation",
+         CONFIRM_FRIEND_URI: "/api/authentication/confirm_friend_request"
     },
     
 
-    getFirstTimeSurveyQuestions: function(auth_token, successFn, failureFn){
-        var me = this,
-        url = me.getDOMAIN() + me.getQUESTIONS_LIST_FIRST_TIME_SURVEY_URI() + auth_token,
-        success = successFn || Ext.emptyFn,
-        failure = failureFn || this.handleFailureCallback;
+    confirmFriendRequest: function(data, successFn, failureFn){
+      var me = this,
+          url = me.getDOMAIN() + me.getCONFIRM_FRIEND_URI(),
+          success = successFn || Ext.emptyFn,
+          failure = failureFn || this.handleFailureCallback;
         Ext.Ajax.request({
-            url : url,
-            method:'GET',
-            timeout: 8000,
-            failure: failure,
-            success: success
+           url : url,
+           method:'POST',
+           params: data,
+           failure: failure,
+           success: success
         });
     },
 
