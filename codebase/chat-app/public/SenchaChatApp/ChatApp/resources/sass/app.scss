@@ -1,0 +1,340 @@
+// The following two lines import the default Sencha Touch theme. If you are building
+// a new theme, remove them and the add your own CSS on top of the base CSS (which
+// is already included in your app.json file).
+@import 'sencha-touch/default';
+@import 'sencha-touch/default/all';
+
+// Custom code goes here..
+
+// Examples of using the icon mixin:
+// @include icon('user');
+
+/* import other css files */
+@import 'slideNav.scss';
+@import 'leftMenuIcon.scss';
+/* end import of other css files */
+
+/* include other css files */
+@include slideNav;
+@include leftMenuIconCls;
+/* end include of other css files */
+
+
+/*  login signup css    */
+
+.loginFormTitlebarCls{
+    margin: 0px !important;
+    margin-bottom: 1.5em !important;
+    padding: 0px !important;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #aaaaaa !important;
+    /* background: #FFFFFF; */
+
+    background: #222;
+    -webkit-box-shadow: inset -15px 0px 30px -15px #000;
+    color: white;
+}
+
+.loginTitleLblCls{
+    color: #FFFFFF !important;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.loginTitleBtnCls{
+    background: transparent !important;
+    border: 0px !important;
+    background-color: transparent !important;
+}
+
+.loginTitleIconBtnCls{
+    background-size: 60%;
+}
+
+.textFieldLoginCls{
+    border: 0px !important;
+    border-bottom: 1px solid #aaaaaa !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    padding: 0px !important;
+ /*   margin: 0px !important;  */
+    background: white !important;
+    letter-spacing: 1px;
+    border-radius: 0px !important;
+    margin: 1.5em !important;
+    margin-top:0px !important;
+}
+
+.textFieldInputLoginCls{
+    padding: 0px;
+}
+
+.signupPageCls{
+	background: #FFFFFF;
+}
+
+.loginBtnClsFirstPage{
+    width: 12em;
+    font-size: 13px;
+    color: #FFFFFF;
+ /*   font-family: OpenSansLight;  */
+    background: #22c064;
+    border: 0px;
+    border-radius: 2em;
+    margin-bottom: 1.5em;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 11px;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+.termsTextCls{
+    font-size: 0.7em;
+    background: #eee;
+    text-align: center;
+    padding: 10px;
+    font-family: OpenSansLight;
+    /* letter-spacing: 1px; */
+    font-weight: normal;
+}
+
+.termsOfUseLinkCls{
+    color: blue;
+}
+
+.forgotBtn{
+	margin: 0.75em auto 0;
+	background: 0;
+	border: 0;
+	width: 10em;	
+	.x-button-label {
+		color: blue;
+		text-decoration: underline;
+	}
+}
+
+.signUpBtnLoginPageCls{
+    width: 14em;
+    font-size: 16px;
+    color: #FFFFFF;
+  /*  font-family: OpenSansLight;  */
+    background: #000000;
+    border: 0px;
+    border-radius: 0px;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 11px;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+.loginPageLblCls{
+    text-align:center;
+    margin-top:1em;
+    font-size:16px;
+    color:#333333;
+    letter-spacing: 1px;
+    font-family: OpenSansLight;
+}
+/*    end of login signup css    */
+
+.leftMenuIcon{
+    min-height: 1.5em;
+    width: 1.5em;
+    margin: 0 0.75em 0 0;
+ /*   background: url(../images/list_checkmark.png);  */
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    background: #FFFFFF;
+    float: left;
+}
+
+/*
+.friendsItemCls:nth-child(odd){
+    background: lightgray;
+}
+
+.friendsItemCls:nth-child(even){
+    background: white;
+}
+*/
+/* chat view css */
+
+.friendMsgCls{
+	background: white;
+	padding: 8px;
+    height: 100%;
+/*	border-radius: 10px;  */
+	margin: 8px;
+/*	width: 80%; */
+	color: black;
+/*	float: left;  */
+}
+
+.myMsgCls{
+	background: #eee;
+	padding: 8px;
+    height: 100%;
+/*	border-radius: 10px;  */
+	margin: 8px;
+/*	width: 80%; */
+	color: black;
+/*	float: right; */
+}
+
+.translatedMsgCls{
+	color: green !important;
+	margin-top: -17px;
+	padding-top: 0;
+	font-style: italic;
+}
+
+.chatListItemCls{
+	margin: 0px;
+	border: 0px !important;
+	padding: 0px;
+}
+
+
+.x-list .x-list-item .x-list-item-body, .x-list .x-list-item.x-list-item-tpl .x-innerhtml{
+	padding: 0px;
+}
+
+.x-list-item.x-stretched.x-list-item-tpl.chatListItemCls.x-list-item-relative, 
+.x-list-item-first.x-list-header-wrap.x-list-item.x-stretched.x-list-item-tpl.chatListItemCls.x-list-item-relative{
+	min-height: 0px !important;
+	.x-list .x-list-item .x-list-item-body, .x-list .x-list-item.x-list-item-tpl .x-innerhtml{
+		padding: 0px;
+	}
+}
+
+.borderCls{
+    border-top: 1px solid gray !important;
+}
+
+.noBorderCls{
+    border-top: 0px solid gray !important;
+}
+
+.transparentPressedCls{
+    background: transparent;
+    background-image: none;
+}
+
+.sendBtnCls{
+    height: 2em;
+    background: #22c064;
+    margin: 5px;
+    margin-top: 1em;
+    color: white;
+    border: 0;
+    border-radius: 0px;
+    .x-button-label{
+        font-weight: normal;
+    }
+}
+
+.getMsgTextAreaCls{
+  /*  border: 2px solid lightgray;
+    border-radius: 10px; */
+    margin: 2px;
+    height: 4em !important;
+    min-height: 4em !important;
+}
+
+.unreadMessageCls{
+    width: 2em;
+    float: right;
+    background: lightgray;
+    text-align: center;
+    border-radius: 15px;
+    border: 1px solid gray;
+}
+
+.onLineCls{
+    width: 15px;
+    height: 15px;
+    background: gray;
+    border-radius: 7px;
+    border: 1px solid gray;
+    margin-right: 7px;
+    float: right;
+}
+
+.senderCls{
+    background: lightgray;
+    padding-top: 0.5em;
+}
+/* end chat view css */
+
+/* settings page css */
+
+.settingsPageBtnCss{
+    font-size: 1em;
+    text-align: left;
+    background-color: transparent !important;
+    background-image: none;
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 1px solid gray;
+    .x-button-label{
+        font-weight: normal;
+        text-align: left;
+    }
+}
+
+.translationToggleLblCls{
+    font-size: 1em;
+    text-align: left;
+    background-color: transparent !important;
+    background-image: none;
+    border-radius: 0px;
+    border: 0px;
+    border-bottom: 1px solid gray;
+}
+
+.setButton{
+    margin: 0em 1em;
+    background: rgba(0,0,0,0) !important;           
+    border:0px;
+    border-bottom: 1px solid #b7b8ae;
+    border-radius: 0px;
+    padding:0px;
+    span{
+        font-size: 1em;
+        line-height: 3.5em;
+        text-align: left;       
+        font-weight: normal;
+    }
+}
+
+.togglefield{
+    height: 3.5em;
+    margin: 0em 1em;
+    border: 0px;
+    border-bottom: 1px solid #b7b8ae;
+    .x-innerhtml{
+        line-height: 3.5em;
+    }
+/*    .x-field{
+        background:rgba(0,0,0,0) !important;
+    }
+    .x-toggle{
+        background:rgb(162, 162, 162) !important;
+    }
+    .x-toggle-on{
+        background:#4a335f !important;
+    }
+    .x-thumb:after{
+        border:0px !important;
+        background: white !important;
+    }  */
+}
+/* */
